@@ -1,8 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using static Equipable;
 using static EquipLocation;
 
 public class PlayerController : MonoBehaviour
@@ -22,7 +20,7 @@ public class PlayerController : MonoBehaviour
     // equipment variables
     [SerializeField] private Hand leftHand;
     [SerializeField] private Hand rightHand;
-    [SerializeField] private Transform head;
+    [SerializeField] private Head head;
 
     bool isPressedL;
     bool isPressedR;
@@ -76,14 +74,10 @@ public class PlayerController : MonoBehaviour
         if (InventoryManager.Instance.IsOpen)
         {
             InventoryManager.Instance.Close();
-            LockMouse();
-            canPerformActions = true;
         }
         else
         {
             InventoryManager.Instance.Open();
-            UnLockMouse();
-            canPerformActions = false;
         }
     }
 
@@ -92,22 +86,23 @@ public class PlayerController : MonoBehaviour
         leftHand.ResetItem();
         rightHand.ResetItem();
     }
-    public void EquipItem(LocationType locationType, EquipableType itemType, int numberOfUses) 
+    public void EquipItem(LocationType locationType, InventoryItem item) 
     {
         switch (locationType)
         {
             case LocationType.LeftHand:
                 if (leftHand.HasItem()) break;
                 Debug.Log("Equipped item in left hand");
-                leftHand.EquipItem(itemType, numberOfUses);
+                leftHand.EquipItem(item);
                 break;
             case LocationType.RightHand:
                 if (rightHand.HasItem()) break;
                 Debug.Log("Equipped item in right hand");
-                rightHand.EquipItem(itemType, numberOfUses);
+                rightHand.EquipItem(item);
                 break;
             case LocationType.Head:
                 Debug.Log("Equipped item on head");
+                head.EquipItem(item);
                 break;
             default:
                 Debug.LogError("Invalid location to equip item");
@@ -127,6 +122,8 @@ public class PlayerController : MonoBehaviour
                 rightHand.UnEquipItem();
                 break;
             case LocationType.Head:
+                if (!head.HasItem()) return;
+                head.UnEquipItem();
                 break;
             default:
                 break;
@@ -154,21 +151,19 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        LockMouse();
+        Utils.LockMouse();
         yaw = transform.eulerAngles.y;
         pitch = Camera.transform.localEulerAngles.x;
         if (pitch > 180f) pitch -= 360f;
+
+        InventoryManager.Instance.OnInventoryStateChanged += InventoryStateChanged;
     }
-    void LockMouse()
+
+    private void InventoryStateChanged(bool state)
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        canPerformActions = !state;
     }
-    void UnLockMouse()
-    {
-        Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = true;
-    }
+
     void Update()
     {
         if (!canPerformActions) return;
@@ -217,5 +212,12 @@ public class PlayerController : MonoBehaviour
 
         Vector3 dir = (transform.forward * moveInput.y + transform.right * moveInput.x).normalized;
         transform.position += moveSpeed * Time.deltaTime * dir;
+    }
+    public int ReloadWeapon(int increase)
+    {
+        var gunHand = leftHand.ItemInHand.Type == Equipable.EquipableType.Gun ? leftHand : rightHand;
+        var prevCount = gunHand.ItemInHand.UseCount;
+        gunHand.ItemInHand.SetUseCount(prevCount + increase);
+        return gunHand.ItemInHand.UseCount - prevCount;
     }
 }

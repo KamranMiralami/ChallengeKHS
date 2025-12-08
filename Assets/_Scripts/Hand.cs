@@ -3,22 +3,44 @@ using static Equipable;
 
 public class Hand : EquipLocation
 {
-    public override void EquipItem(EquipableType itemType, int numberOfUses)
+    public override void EquipItem(InventoryItem item)
     {
         if (HasItem())
         {
             UnEquipItem();
         }
-        switch(itemType)
+        CurrentItem = item;
+        switch (item.type)
         {
             case EquipableType.Gun:
                 var itemInHandPrefab = ResourceManager.Instance.GetItemPrefab(EquipableType.Gun);
                 itemInHand = Instantiate(itemInHandPrefab, transform);
-                if(itemInHand is Gun gun)
-                {
-                    gun.BulletCount = numberOfUses;
-                }
-                itemInHand.Equip(owner);
+                itemInHand.Equip(this);
+                itemInHand.SetUseCount(item.NumberOfUses);
+                break;
+            case EquipableType.Magazine:
+                var magazinePrefab = ResourceManager.Instance.GetItemPrefab(EquipableType.Magazine);
+                itemInHand = Instantiate(magazinePrefab, transform);
+                itemInHand.Equip(this);
+                itemInHand.SetUseCount(item.NumberOfUses);
+                break;
+            case EquipableType.Rock:
+                var rockPrefab = ResourceManager.Instance.GetItemPrefab(EquipableType.Rock);
+                itemInHand = Instantiate(rockPrefab, transform);
+                itemInHand.Equip(this);
+                itemInHand.SetUseCount(item.NumberOfUses);
+                break;
+            case EquipableType.Flashlight:
+                var flashlightPrefab = ResourceManager.Instance.GetItemPrefab(EquipableType.Flashlight);
+                itemInHand = Instantiate(flashlightPrefab, transform);
+                itemInHand.Equip(this);
+                itemInHand.SetUseCount(item.NumberOfUses);
+                break;
+            case EquipableType.Hat:
+                var hatPrefab = ResourceManager.Instance.GetItemPrefab(EquipableType.Hat);
+                itemInHand = Instantiate(hatPrefab, transform);
+                itemInHand.Equip(this);
+                itemInHand.SetUseCount(item.NumberOfUses);
                 break;
             default:
                 UnEquipItem();
@@ -30,6 +52,7 @@ public class Hand : EquipLocation
     {
         itemInHand.Unequip();
         itemInHand = null;
+        CurrentItem = null;
     }
 
     public override void UseItem()
@@ -39,7 +62,18 @@ public class Hand : EquipLocation
         switch(itemInHand.Type)
         {
             case EquipableType.Gun:
-                UsedGun();
+                UseWithDirection();
+                break;
+            case EquipableType.Magazine:
+                ItemInHand.OnUse(Vector3.zero);
+                break;
+            case EquipableType.Rock:
+                UseWithDirection();
+                break;
+            case EquipableType.Flashlight:
+                ItemInHand.OnUse(Vector3.zero);
+                break;
+            case EquipableType.Hat:
                 break;
             default:
                 throw new System.NotImplementedException();
@@ -50,7 +84,7 @@ public class Hand : EquipLocation
         if (!HasItem()) return;
         itemInHand.ResetItem();
     }
-    void UsedGun()
+    void UseWithDirection()
     {
         Vector2 screenPoint = GameManager.Instance.Crosshair.position;
         Ray ray = owner.Camera.ScreenPointToRay(screenPoint);

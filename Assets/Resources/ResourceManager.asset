@@ -14,3 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BulletPrefab: {fileID: 8819003248756943946, guid: f4c41bb12060f574093355472d0e0bac, type: 3}
   GunPrefab: {fileID: 7000394992245213318, guid: d53088f41909daf49b1466eb797a55ee, type: 3}
+  MagazinePrefab: {fileID: 2786815661619779095, guid: c5d67f3841822e14e8bbc4f6b87e4e02, type: 3}
+  RockPrefab: {fileID: 2757441819154804310, guid: 99e7162b3012ef1459042675cf20cd09, type: 3}
+  FlashlightPrefab: {fileID: 7109360909285793703, guid: b70ca46007261e540b8d97d62197bd07, type: 3}
+  HatPrefab: {fileID: 3990343707739655535, guid: 4528f84023db992428356a3d20c2c8a4, type: 3}

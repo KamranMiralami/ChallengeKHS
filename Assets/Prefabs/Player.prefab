@@ -34,6 +34,7 @@ Transform:
   m_Children:
   - {fileID: 5893487979160062968}
   - {fileID: 8804681695705472586}
+  - {fileID: 6610065035828103907}
   m_Father: {fileID: 3992342287882051126}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &7658151258951231025
@@ -184,6 +185,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dbc15ae912aea54caa54a87dcc42b75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentItem:
+    type: 0
+  type: 2
 --- !u!1 &2770156177869153177
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,6 +232,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dbc15ae912aea54caa54a87dcc42b75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentItem:
+    type: 0
+  type: 1
+--- !u!1 &3586536467179658926
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6610065035828103907}
+  - component: {fileID: 8964296233889721826}
+  m_Layer: 0
+  m_Name: Head
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6610065035828103907
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3586536467179658926}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
+  m_LocalPosition: {x: 0, y: 0.6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 386714302372964182}
+  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
+--- !u!114 &8964296233889721826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3586536467179658926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af58f5ae7d318484b94ab8ae8de8a105, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurrentItem:
+    type: 0
+  type: 3
 --- !u!1 &4134969468620260908
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,7 +497,7 @@ MonoBehaviour:
   maxPitch: 80
   leftHand: {fileID: 3415553630811360927}
   rightHand: {fileID: 3056103461483385555}
-  head: {fileID: 0}
+  head: {fileID: 8964296233889721826}
 --- !u!54 &5934532104048135511
 Rigidbody:
   m_ObjectHideFlags: 0

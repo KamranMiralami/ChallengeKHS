@@ -4,6 +4,7 @@ using UnityEngine.Windows;
 public class Gun : Equipable
 {
     [SerializeField] private Transform shootingPos;
+    [SerializeField] private int MagazineSize = 20;
     int bulletCount;
     public int BulletCount
     {
@@ -13,12 +14,13 @@ public class Gun : Equipable
         }
         set
         {
+            value = Mathf.Clamp(value, 0, MagazineSize);
             bulletCount = value;
             UIManager.Instance.ChangeAmmo(bulletCount);
+            owner.CurrentItem.NumberOfUses = bulletCount;
         }
     }
     bool singleMode;
-    PlayerInputActions input;
     bool SingleMode {
         get {
             return singleMode;
@@ -43,11 +45,12 @@ public class Gun : Equipable
     {
         SingleMode = false;
     }
-    public override void Equip(PlayerController owner)
+    public override void Equip(EquipLocation owner)
     {
         this.owner = owner;
         UIManager.Instance.DisplayAmmo(true);
         UIManager.Instance.DisplayMode(true);
+        base.Equip(owner);
         // probably run animation here
     }
     public override void Unequip()
@@ -87,4 +90,9 @@ public class Gun : Equipable
         if(currentCooldown <= 0 || currentCooldown >= 100) // this is basically here to prevent auto mouse clickers (kinda a cheat)
             currentCooldown = 0.2f;
     }
+    public override void SetUseCount(int count)
+    {
+        BulletCount = count;
+    }
+    public override int UseCount => BulletCount;
 }
