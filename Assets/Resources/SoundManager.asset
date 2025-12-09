@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63c2f13a617a366418bd4755f0063947, type: 3}
+  m_Name: SoundManager
+  m_EditorClassIdentifier: 
+  AudioDatas:
+  - ID: BG
+    clip: {fileID: 8300000, guid: abd5c9d215b59324fa017477d33cbc86, type: 3}
+    IsLoop: 1
+    Volume: 20
+    PitchRandomness: 0
+  - ID: flash light
+    clip: {fileID: 8300000, guid: 6044d6c1baffc8e4684c0b08da419441, type: 3}
+    IsLoop: 0
+    Volume: 75
+    PitchRandomness: 0
+  - ID: gun shot
+    clip: {fileID: 8300000, guid: b2a70303f39920640a1baaa488d824f8, type: 3}
+    IsLoop: 0
+    Volume: 50
+    PitchRandomness: 0
+  - ID: reload
+    clip: {fileID: 8300000, guid: c127a824159904e498bb3bddd2a3e849, type: 3}
+    IsLoop: 0
+    Volume: 5
+    PitchRandomness: 0
+  - ID: door
+    clip: {fileID: 8300000, guid: a94b1c7e2f981d041b02cfe305d4df3a, type: 3}
+    IsLoop: 0
+    Volume: 50
+    PitchRandomness: 0
+  audioSourceCount: 5

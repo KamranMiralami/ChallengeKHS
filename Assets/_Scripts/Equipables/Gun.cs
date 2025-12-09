@@ -1,3 +1,4 @@
+using SFXSystem;
 using UnityEngine;
 using UnityEngine.Windows;
 
@@ -68,6 +69,7 @@ public class Gun : Equipable
         bullet.Shoot(direction);
         currentCooldown = cooldown;
         BulletCount--;
+        SoundSystemManager.Instance.PlaySFX("gun shot");
     }
     public override bool CanBeUsed()
     {

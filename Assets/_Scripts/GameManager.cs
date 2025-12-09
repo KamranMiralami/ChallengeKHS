@@ -1,5 +1,7 @@
+using SFXSystem;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class GameManager : SingletonBehaviour<GameManager>
 {
@@ -9,5 +11,14 @@ public class GameManager : SingletonBehaviour<GameManager>
     private void Start()
     {
         InventoryManager.Instance.Initialize();
+        SoundSystemManager.Instance.PlaySFX("BG");
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Scene currentScene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(currentScene.name);
+        }
     }
 }

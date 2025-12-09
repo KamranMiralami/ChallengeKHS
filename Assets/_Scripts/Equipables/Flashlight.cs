@@ -1,3 +1,4 @@
+using SFXSystem;
 using UnityEngine;
 
 public class Flashlight : Equipable
@@ -20,6 +21,7 @@ public class Flashlight : Equipable
         if(used) return;
         used = true;
         SetUseCount(UseCount == 2? 1:2);
+        SoundSystemManager.Instance.PlaySFX("flash light");
     }
 
     public override void ResetItem()

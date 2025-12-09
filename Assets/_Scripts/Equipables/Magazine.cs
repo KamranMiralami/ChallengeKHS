@@ -1,3 +1,4 @@
+using SFXSystem;
 using UnityEngine;
 
 public class Magazine : Equipable
@@ -18,7 +19,8 @@ public class Magazine : Equipable
     {
         var used = owner.Owner.ReloadWeapon(UseCount);
         SetUseCount(useCount - used);
-        if(UseCount <= 0)
+        SoundSystemManager.Instance.PlaySFX("reload");
+        if (UseCount <= 0)
         {
             InventoryManager.Instance.RemoveItemFromInventory(owner.CurrentItem);
             Destroy(gameObject);

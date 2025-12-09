@@ -26,7 +26,9 @@ public class PlayerController : MonoBehaviour
     bool isPressedR;
 
     // general variables
+    public LayerMask interactMask;
     bool canPerformActions = true;
+    Interactable currentInteractable;
     public void DisableMovement()
     {
         input.Player.Disable();
@@ -51,6 +53,7 @@ public class PlayerController : MonoBehaviour
         input.Player.Inventory.performed += _ => InventoryButtonClicked();
 
         input.Player.Crouch.performed += val => ChangeGunMode();
+        input.Player.Interact.performed += val => InteractWithObject();
     }
 
     private void ChangeGunMode()
@@ -167,8 +170,53 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (!canPerformActions) return;
-        HandleMovement();
         HandleInput();
+        HandleInteractables();
+        HandleRotation();
+        HandleMovement(); //this could have been done in fixed update and with rigidbody.
+                          //but doing so lead me to some weird jitter with camera at which point i gave up
+    }
+
+    private void HandleRotation()
+    {
+        yaw += lookInput.x * sensitivity * Time.deltaTime;
+        pitch -= lookInput.y * sensitivity * Time.deltaTime;
+        pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
+
+        transform.rotation = Quaternion.Euler(0f, yaw, 0f);
+        Camera.transform.localRotation = Quaternion.Euler(pitch, 0f, 0f);
+    }
+
+    private void HandleInteractables()
+    {
+        Ray ray = new Ray(Camera.transform.position, transform.forward);
+        if (Physics.Raycast(ray, out RaycastHit hit, 3, interactMask))
+        {
+            var interactable = hit.collider.GetComponent<Interactable>();
+
+            if (interactable != currentInteractable)
+            {
+                if(currentInteractable != null)
+                    currentInteractable.OnUnHighlight();
+                currentInteractable = interactable;
+                currentInteractable.OnHighlight();
+            }
+        }
+        else
+        {
+            if (currentInteractable != null)
+            {
+                currentInteractable.OnUnHighlight();
+                currentInteractable = null;
+            }
+        }
+    }
+    private void InteractWithObject()
+    {
+        if(currentInteractable != null)
+        {
+            currentInteractable.OnInteract();
+        }
     }
 
     private void HandleInput()
@@ -203,14 +251,7 @@ public class PlayerController : MonoBehaviour
 
     private void HandleMovement()
     {
-        yaw += lookInput.x * sensitivity * Time.deltaTime;
-        pitch -= lookInput.y * sensitivity * Time.deltaTime;
-        pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
-
-        transform.rotation = Quaternion.Euler(0f, yaw, 0f);
-        Camera.transform.localRotation = Quaternion.Euler(pitch, 0f, 0f);
-
-        Vector3 dir = (transform.forward * moveInput.y + transform.right * moveInput.x).normalized;
+        Vector3 dir = (transform.forward * moveInput.y + transform.right * moveInput.x).normalized; 
         transform.position += moveSpeed * Time.deltaTime * dir;
     }
     public int ReloadWeapon(int increase)
