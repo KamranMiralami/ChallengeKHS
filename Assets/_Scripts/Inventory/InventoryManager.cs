@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class InventoryManager : SingletonBehaviour<InventoryManager>
 {

@@ -11,7 +11,6 @@ public class GameManager : SingletonBehaviour<GameManager>
     private void Start()
     {
         InventoryManager.Instance.Initialize();
-        SoundSystemManager.Instance.PlaySFX("BG");
     }
     private void Update()
     {
@@ -19,6 +18,10 @@ public class GameManager : SingletonBehaviour<GameManager>
         {
             Scene currentScene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(currentScene.name);
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
         }
     }
 }
